@@ -15,11 +15,16 @@ import setAuthToken from './utils/setAuthToken';
 import './App.css';
 import Dashboard from './components/dashboard/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
-import ProfileForm from './components/profile-forms/ProfileForm';
 import AddEducation from './components/profile-forms/AddEducation';
 import AddExperience from './components/profile-forms/AddExperience';
+import ProfileForm from './components/profile-forms/ProfileForm';
 import Profiles from './components/profiles/Profiles';
 import Profile from './components/profile/Profile';
+import Posts from './components/posts/Posts';
+import Post from './components/post/Post';
+import NotFound from './components/layout/NotFound';
+
+import { LOGOUT } from './actions/types';
 
 const App = () => {
   useEffect(() => {
@@ -31,6 +36,11 @@ const App = () => {
     // try to fetch a user, if no token or invalid token we
     // will get a 401 response from our API
     store.dispatch(loadUser());
+
+    // log user out from all tabs if they log out in one tab
+    window.addEventListener('storage', () => {
+      if (!localStorage.token) store.dispatch({ type: LOGOUT });
+    });
   }, []);
 
   return (
@@ -49,21 +59,27 @@ const App = () => {
             element={<PrivateRoute component={Dashboard} />}
           />
           <Route
-            path='create-profile'
+            path='/create-profile'
             element={<PrivateRoute component={ProfileForm} />}
           />
           <Route
-            path='edit-profile'
+            path='/edit-profile'
             element={<PrivateRoute component={ProfileForm} />}
           />
           <Route
-            path='add-experience'
+            path='/add-experience'
             element={<PrivateRoute component={AddExperience} />}
           />
           <Route
-            path='add-education'
+            path='/add-education'
             element={<PrivateRoute component={AddEducation} />}
           />
+          <Route path='/posts' element={<PrivateRoute component={Posts} />} />
+          <Route
+            path='/posts/:id'
+            element={<PrivateRoute component={Post} />}
+          />{' '}
+          <Route path='/*' element={<NotFound />} />
         </Routes>
       </Router>
     </Provider>

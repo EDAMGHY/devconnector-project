@@ -45,6 +45,12 @@ img {
 }
 
 /* Text Styles*/
+.xl-large {
+  font-size: 6rem;
+  line-height: 1.5;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
 .x-large {
   font-size: 4rem;
   line-height: 1.2;
