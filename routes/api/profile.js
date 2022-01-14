@@ -4,26 +4,27 @@ const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 const request = require('request');
 const config = require('config');
 // @route GET api/profile/me
 // @desc Get current users profile
 // @access Private
 router.get('/me', auth, async (req, res) => {
- try {
-   const profile = await Profile.findOne({
-     user: req.user.id,
-   }).populate('user', ['name', 'avatar']);
+  try {
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate('user', ['name', 'avatar']);
 
-   if (!profile) {
-     return res.status(400).json({ msg: 'There is no profile for this user' });
-   }
+    if (!profile) {
+      return res.status(400).json({ msg: 'There is no profile for this user' });
+    }
 
-   res.json(profile);
- } catch (err) {
-   console.error(err.message);
-   res.status(500).send('Server Error');
- }
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 // @route POST api/profile/
@@ -144,7 +145,7 @@ router.get('/user/:user_id', async (req, res) => {
 router.delete('/', auth, async (req, res) => {
   try {
     //@todo - remove users posts
-
+    await Post.deleteMany({ user: req.user.id });
     //remove profile
     await Profile.findOneAndRemove({ user: req.user.id });
     // remove user
@@ -178,7 +179,7 @@ router.put(
     }
     const { title, company, location, from, to, current, description } =
       req.body;
-    const newEdu = {
+    const newExp = {
       title,
       company,
       location,
