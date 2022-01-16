@@ -1,6 +1,0 @@
-{
-  "mongoURI": "mongodb+srv://edamghy:theking00@cluster1.76maf.mongodb.net/devconnector?retryWrites=true&w=majority",
-  "jwtSecret": "mysecrettoken",
-  "githubClientId": "7f8bbc06da7c0e139e5f",
-  "githubSecret": "ac6e8d4e48085aa0032e59dfd66f4622b79fb5f4"
-}
